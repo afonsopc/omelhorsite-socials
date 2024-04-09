@@ -1,0 +1,13 @@
+services:
+  socials:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./storage:/rails/storage
+    env_file:
+      - .env
+    environment:
+      - PORT=1143
+    ports:
+      - "1143:1143"
