@@ -8,6 +8,9 @@ services:
     env_file:
       - .env
     environment:
+      - ACCOUNTS_SERVICE_URL=http://accounts:1139
+      - NOTIFICATIONS_SERVICE_URL=http://notifications:1908
+      - NOTIFICATIONS_API_KEY=231231
       - PORT=1143
     ports:
       - "1143:1143"

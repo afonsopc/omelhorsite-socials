@@ -5,7 +5,7 @@ require 'uri'
 require 'json'
 
 # AccountsApi
-class AccountsApi
+class AccountsApi < ApplicationApi
   attr_accessor :token
 
   def auth_token_from_headers(headers)
@@ -17,25 +17,21 @@ class AccountsApi
 
     return if token.empty? || token.length == authorization_header.length
 
-    self.token = token
+    @token = token
 
     token
   end
 
   def get_account_info(params)
-    uri = URI.parse('https://accounts.omelhorsite.pt/account')
-    uri.query = params
+    Rails.logger.info("Getting account info with params: #{params}")
 
-    request = Net::HTTP::Get.new(uri)
-    request['Authorization'] = "Bearer #{token}" if token
-
-    req_options = {
-      use_ssl: uri.scheme == 'https'
-    }
-
-    Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
-    end
+    send_request(
+      "#{ENV['ACCOUNTS_SERVICE_URL']}/account",
+      :get,
+      @token,
+      {},
+      params
+    )
   end
 
   def user_id_exists?(user_id)
@@ -46,7 +42,7 @@ class AccountsApi
   end
 
   def user_id
-    return nil unless token
+    return nil unless @token
 
     params = 'info_to_get[id]=true'
     response = get_account_info(params)

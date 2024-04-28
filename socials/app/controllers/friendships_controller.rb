@@ -16,6 +16,7 @@ class FriendshipsController < ApplicationController
     return head validation_status unless validation_status == :ok
 
     Friendship.create_friendship(user_id, friend_id)
+    NotificationsApi.new.friendship_request(friend_id, user_id)
 
     head :created
   end
@@ -25,6 +26,7 @@ class FriendshipsController < ApplicationController
     return head validation_status unless validation_status == :ok
 
     Friendship.accept_friendship(user_id, friend_id)
+    NotificationsApi.new.friendship_accepted(friend_id, user_id)
 
     head :ok
   end

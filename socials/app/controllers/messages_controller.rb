@@ -14,6 +14,7 @@ class MessagesController < ApplicationController
     return head validation_status unless validation_status == :ok
 
     Message.send_text_message(user_id, receiver_id, params[:body])
+    NotificationsApi.new.message_received(receiver_id, user_id)
 
     head :created
   end
@@ -23,6 +24,7 @@ class MessagesController < ApplicationController
     return head validation_status unless validation_status == :ok
 
     Message.send_image_message(user_id, receiver_id, image_binary_data)
+    NotificationsApi.new.message_received(receiver_id, user_id)
 
     head :created
   end
