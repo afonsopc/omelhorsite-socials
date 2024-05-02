@@ -24,7 +24,7 @@ class NotificationsApi < ApplicationApi
       "#{ENV['NOTIFICATIONS_SERVICE_URL']}/notifications.php",
       :post,
       ENV['NOTIFICATIONS_API_KEY'],
-      { user_id: user_id, type: type, context: context },
+      { user_id:, type:, context: },
       ''
     )
 

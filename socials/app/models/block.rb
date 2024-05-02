@@ -17,7 +17,7 @@ class Block < ApplicationRecord
   end
 
   def self.blocked?(user_id, friend_id)
-    return false if user_id.nil? || friend_id.nil?
+    return if user_id.nil? || friend_id.nil?
 
     Block
       .where(blocker_id: user_id, blocked_id: friend_id)
@@ -25,7 +25,7 @@ class Block < ApplicationRecord
   end
 
   def self.blocked_users(user_id)
-    return [] if user_id.nil?
+    return if user_id.nil?
 
     Block
       .where(blocker_id: user_id)

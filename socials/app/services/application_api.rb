@@ -29,7 +29,7 @@ class ApplicationApi
     request['Authorization'] = "Bearer #{token}" unless token.nil? || token.empty?
     request.body = body.to_json unless body.nil? || body.empty?
 
-    { uri: uri, request: request }
+    { uri:, request: }
   end
 
   def parse_method(method)

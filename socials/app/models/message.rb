@@ -15,7 +15,7 @@ class Message < ApplicationRecord
       .where(sender_id: user_id, receiver_id: other_user_id)
       .or(Message.where(sender_id: other_user_id, receiver_id: user_id))
       .order(created_at: :desc)
-      .paginate(page: page, per_page: 10)
+      .paginate(page: page.to_i + 1, per_page: 10)
   end
 
   def self.delete_conversation(user_id, other_user_id)
@@ -28,9 +28,9 @@ class Message < ApplicationRecord
   def self.send_text_message(sender_id, receiver_id, body)
     Message
       .create(
-        sender_id: sender_id,
-        receiver_id: receiver_id,
-        body: body,
+        sender_id:,
+        receiver_id:,
+        body:,
         message_type: 'text'
       )
   end
@@ -38,8 +38,8 @@ class Message < ApplicationRecord
   def self.send_image_message(sender_id, receiver_id, image)
     Message
       .create(
-        sender_id: sender_id,
-        receiver_id: receiver_id,
+        sender_id:,
+        receiver_id:,
         body: get_url_for_image(image, image.original_filename, image.content_type),
         message_type: 'image'
       )
@@ -49,8 +49,8 @@ class Message < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_path(
       ActiveStorage::Blob.create_and_upload!(
         io: File.open(Message.optimize_image(image).path),
-        filename: filename,
-        content_type: content_type
+        filename:,
+        content_type:
       ), only_path: true
     )
   end

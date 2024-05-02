@@ -78,7 +78,7 @@ class MessagesController < ApplicationController
     return validation_status unless validation_status == :ok
 
     return :bad_request if params[:page].nil? ||
-                           params[:page].to_i < 1
+                           params[:page].to_i.negative?
 
     :ok
   end
