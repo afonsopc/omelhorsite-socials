@@ -51,6 +51,7 @@ class MessagesController < ApplicationController
     validation_status = validate_delete_conversation_request
 
     return validation_status unless validation_status == :ok
+    return :forbidden if Block.blocked?(user_id, receiver_id) || Block.blocked?(receiver_id, user_id)
     return :unauthorized unless Settings.user_settings(friend_id)['allow_non_friend_messages'] ||
                                 Friendship.friends?(user_id, receiver_id)
 
